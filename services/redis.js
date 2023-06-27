@@ -1,11 +1,13 @@
 const redis = require("ioredis");
-const redisClient = redis.createClient({
-  password: "3qfRzzQxNUscJZ8yidc9ptVyKhIwwFhn",
-  socket: {
-    host: "redis-10820.c226.eu-west-1-3.ec2.cloud.redislabs.com",
-    port: 10820,
-  },
-});
+
+require("dotenv").config();
+
+const endpoint = process.env.REDIS_ENDPOINT_URL || "127.0.0.1:6379";
+const password = process.env.REDIS_PASSWORD || null;
+
+const [host, port] = endpoint.split(":");
+
+const redisClient = redis.createClient(+port, host, "default", password);
 
 redisClient.on("connect", () => {
   console.log("connected to redis successfully!");
