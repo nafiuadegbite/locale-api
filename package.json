@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/nafiuadegbite/locale-api#readme",
   "dependencies": {
-    "@vercel/kv": "^0.2.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
     "connect-redis": "^7.1.0",
@@ -33,6 +32,7 @@
     "mongoose": "^7.2.4",
     "morgan": "^1.10.0",
     "rate-limit-redis": "^3.0.2",
+    "redis": "^4.6.7",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

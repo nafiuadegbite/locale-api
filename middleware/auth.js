@@ -2,9 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const RedisStore = require("rate-limit-redis");
-const Redis = require("ioredis");
-const client = new Redis();
 const User = require("../models/users/users.mongo");
+const redisClient = require("../services/redis");
 
 const protect = async (req, res, next) => {
   let token;
@@ -65,7 +64,7 @@ const getSignedJwtToken = (id) => {
 const limiter = rateLimit({
   store: new RedisStore({
     sendCommand(...args) {
-      return client.call(...args);
+      return redisClient.call(...args);
     },
   }),
   windowMs: 15 * 60 * 1000, // 15 minutes

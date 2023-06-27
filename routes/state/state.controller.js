@@ -1,10 +1,31 @@
-const Redis = require("ioredis");
-const redis = new Redis();
 const {
   createNewState,
   getAllStates,
   getSearch,
 } = require("../../models/states/states.model");
+const redisClient = require("../../services/redis");
+
+// const httpGetSearch = async (req, res) => {
+//   try {
+//     let query = req.query;
+
+//     let results;
+
+//     if (Object.keys(query)[0] === "region") {
+//       let filter = { state: 1, region: 1 };
+//       results = await getSearch(query, filter);
+//     } else if (Object.keys(query)[0] === "lgas") {
+//       let filter = { state: 1 };
+//       results = await getSearch(query, filter);
+//     } else {
+//       results = await getSearch(query);
+//     }
+
+//     return res.status(200).json(results);
+//   } catch (error) {
+//     res.status(400).json({ message: "Bad Request" });
+//   }
+// };
 
 const httpGetSearch = async (req, res) => {
   try {
@@ -15,7 +36,7 @@ const httpGetSearch = async (req, res) => {
     const queryKey = JSON.stringify(query);
 
     // Check if the results are already cached
-    const cachedResults = await redis.get(queryKey);
+    const cachedResults = await redisClient.get(queryKey);
 
     if (cachedResults) {
       // Return the cached results
@@ -33,7 +54,7 @@ const httpGetSearch = async (req, res) => {
       }
 
       // Cache the results for 1 hour
-      await redis.set(queryKey, JSON.stringify(results), "EX", 3600);
+      await redisClient.set(queryKey, JSON.stringify(results), "EX", 3600);
     }
 
     return res.status(200).json(results);
@@ -46,14 +67,14 @@ const httpGetAllStates = async (req, res) => {
   try {
     // Check if the data is available in the Redis cache
 
-    const data = await redis.get("allStates");
+    const data = await redisClient.get("allStates");
     if (data) {
       return res.status(200).json(JSON.parse(data));
     }
 
     const allStates = await getAllStates();
 
-    redis.set("allStates", JSON.stringify(allStates), "EX", 60 * 60);
+    redisClient.set("allStates", JSON.stringify(allStates), "EX", 60 * 60);
 
     return res.status(200).json(allStates);
   } catch (error) {

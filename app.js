@@ -12,6 +12,7 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// app.use(redisClient);
 app.use(limiter);
 app.use("/api/v1", api);
 

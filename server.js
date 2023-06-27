@@ -1,6 +1,7 @@
 const http = require("http");
 const app = require("./app");
 const { mongoConnect } = require("./services/mongo");
+const redisClient = require("./services/redis");
 
 require("dotenv").config();
 
