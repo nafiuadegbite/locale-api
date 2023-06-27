@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/nafiuadegbite/locale-api#readme",
   "dependencies": {
+    "@vercel/kv": "^0.2.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
