@@ -7,6 +7,8 @@ const password = process.env.REDIS_PASSWORD;
 
 const [host, port] = endpoint.split(":");
 
+console.log(endpoint);
+
 const redisClient = new Redis({
   host: host,
   port: port,
